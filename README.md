@@ -18,7 +18,7 @@ This is a simple app that shows an endless feed of items. Each item is represent
 
 ### Architecture
 1. **Refactor into a Presentation pattern** to allow unit testing the project. Eg.: MVP, MVVM, etc.
-2. **Implement ´FeedRepository´** to take care of the pagination and enables seamless infinite scrolling experience.
+2. **Implement FeedRepository** to take care of the pagination and enables seamless infinite scrolling experience.
 
 ### Logic
 1. **Implement seamless one directional scrolling** (from newest to oldest items). After launching the app I should be able to seamlessly scroll down to older items.
