@@ -1,6 +1,8 @@
 package com.glovoapp.feed.data
 
-import android.os.Handler
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,9 +26,10 @@ class FeedService(private val dateProvider: DateProvider = SystemDateProvider) {
 
         val items = getItems(date, range)
 
-        Handler().postDelayed({
+        GlobalScope.launch {
+            delay(2500)
             callback(items)
-        }, 2500)
+        }
     }
 
     private fun getItems(date: Date, range: IntRange): List<FeedItem> {
