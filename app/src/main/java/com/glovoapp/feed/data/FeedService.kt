@@ -21,33 +21,41 @@ class FeedService(private val dateProvider: DateProvider = SystemDateProvider) {
     }
 
     private fun getItems(date: Date, range: IntRange, callback: (List<FeedItem>) -> Unit) {
-        val items: MutableList<FeedItem> = mutableListOf()
+
+        val items = getItems(date, range)
+
+        Handler().postDelayed({
+            callback(items)
+        }, 2500)
+    }
+
+    private fun getItems(date: Date, range: IntRange): List<FeedItem> {
 
         val todayCalendar = Calendar.getInstance().apply {
             time = dateProvider.now()
         }
         var futureCalendar: Calendar
 
-        for (i in range.reversed()) {
+        return range.reversed().mapNotNull { i ->
             futureCalendar = Calendar.getInstance().apply {
                 this.time = date
                 this.add(Calendar.SECOND, i)
             }
 
             if (futureCalendar > todayCalendar) {
-                continue
+                null
+            } else {
+                val id =
+                    futureCalendar.get(Calendar.HOUR)
+                +futureCalendar.get(Calendar.MINUTE)
+                +futureCalendar.get(Calendar.SECOND)
+
+                val createdAt = futureCalendar.time
+                val title = dateFormat.format(createdAt)
+
+                FeedItem(id, createdAt, title)
             }
 
-            val id =
-                futureCalendar.get(Calendar.HOUR) + futureCalendar.get(Calendar.MINUTE) + futureCalendar.get(Calendar.SECOND)
-            val createdAt = futureCalendar.time
-            val title = dateFormat.format(createdAt)
-
-            items.add(FeedItem(id, createdAt, title))
         }
-
-        Handler().postDelayed({
-            callback(items)
-        }, 2500)
     }
 }
