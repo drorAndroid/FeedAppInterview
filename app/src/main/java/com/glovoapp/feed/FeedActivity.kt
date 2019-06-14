@@ -6,24 +6,33 @@ import android.support.v7.widget.LinearLayoutManager
 import com.glovoapp.feed.data.FeedRepository
 import com.glovoapp.feed.data.FeedService
 import kotlinx.android.synthetic.main.activity_feed.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class FeedActivity : AppCompatActivity() {
-
-    private val feedItemAdapter = FeedItemAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed)
 
-        recycler.layoutManager = LinearLayoutManager(this@FeedActivity)
-        recycler.adapter = feedItemAdapter
+        val feedItemAdapter = FeedItemAdapter()
 
-        val feedRepository = FeedRepository(FeedService())
+        recycler.apply {
+            layoutManager = LinearLayoutManager(this@FeedActivity)
+            adapter = feedItemAdapter
+        }
 
-        feedRepository.getLatestItems { items ->
-            feedItemAdapter.items = items
-            feedItemAdapter.notifyDataSetChanged()
+        GlobalScope.launch {
+            FeedRepository(FeedService()).getLatestItems { items ->
+                GlobalScope.launch(Dispatchers.Main) {
+
+                    feedItemAdapter.items = items
+                    feedItemAdapter.notifyDataSetChanged()
+                }
+            }
         }
     }
 }
+

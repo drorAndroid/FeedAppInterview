@@ -1,21 +1,36 @@
 package com.glovoapp.feed
 
+import android.os.Looper
 import com.glovoapp.feed.data.DateProvider
 import com.glovoapp.feed.data.FeedItem
 import com.glovoapp.feed.data.FeedService
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
-import org.mockito.junit.MockitoJUnitRunner
+import org.powermock.api.mockito.PowerMockito
+import org.powermock.core.classloader.annotations.PrepareForTest
+import org.powermock.modules.junit4.PowerMockRunner
 import java.util.Date
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 
+//Timeout for the CompletableFuture in case it fails, so the tests can continue
 private const val TIMEOUT = 3000L
 
-@RunWith(MockitoJUnitRunner::class)
+@RunWith(PowerMockRunner::class)
+@PrepareForTest(Looper::class)
 class FeedServiceTest {
+
+    @Before
+    fun setup() {
+        val mockMainThreadLooper = mock(Looper::class.java)
+        `when`(mockMainThreadLooper.isCurrentThread).thenReturn(false)
+
+        PowerMockito.mockStatic(Looper::class.java)
+        `when`(Looper.getMainLooper()).thenReturn(mockMainThreadLooper)
+    }
 
     private val dateProvider = mock(DateProvider::class.java)
     private val service = FeedService(dateProvider)

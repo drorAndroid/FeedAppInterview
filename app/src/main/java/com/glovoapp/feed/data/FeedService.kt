@@ -1,5 +1,9 @@
 package com.glovoapp.feed.data
 
+import android.annotation.TargetApi
+import android.os.Build
+import android.os.Looper
+import android.os.NetworkOnMainThreadException
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -22,7 +26,13 @@ class FeedService(private val dateProvider: DateProvider = SystemDateProvider) {
         getOlderItems(dateProvider.now(), limit, callback)
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     private fun getItems(date: Date, range: IntRange, callback: (List<FeedItem>) -> Unit) {
+        //We want to enforce the candidate to not use the UI thread
+        if (Looper.getMainLooper().isCurrentThread) {
+            //To support all android SDK: (Looper.myLooper() == Looper.getMainLooper())
+            throw NetworkOnMainThreadException()
+        }
 
         val items = getItems(date, range)
 
