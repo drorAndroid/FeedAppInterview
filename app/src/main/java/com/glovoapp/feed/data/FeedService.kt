@@ -4,8 +4,7 @@ import android.os.Handler
 import java.text.SimpleDateFormat
 import java.util.*
 
-
-class FeedService {
+class FeedService(private val dateProvider: DateProvider = SystemDateProvider) {
 
     val dateFormat = SimpleDateFormat("hh:mm:ss", Locale.getDefault())
 
@@ -18,13 +17,15 @@ class FeedService {
     }
 
     fun getLatestItems(limit: Int = 10, callback: (List<FeedItem>) -> Unit) {
-        getOlderItems(Date(), limit, callback)
+        getOlderItems(dateProvider.now(), limit, callback)
     }
 
     private fun getItems(date: Date, range: IntRange, callback: (List<FeedItem>) -> Unit) {
         val items: MutableList<FeedItem> = mutableListOf()
 
-        val todayCalendar = Calendar.getInstance()
+        val todayCalendar = Calendar.getInstance().apply {
+            time = dateProvider.now()
+        }
         var futureCalendar: Calendar
 
         for (i in range.reversed()) {
