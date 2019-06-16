@@ -1,13 +1,18 @@
 package com.glovoapp.feed
 
 import com.glovoapp.feed.data.DateProvider
+import com.glovoapp.feed.data.FeedItem
 import com.glovoapp.feed.data.FeedService
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.junit.MockitoJUnitRunner
-import java.util.*
+import java.util.Date
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.TimeUnit
+
+private const val TIMEOUT = 3000L
 
 @RunWith(MockitoJUnitRunner::class)
 class FeedServiceTest {
@@ -21,14 +26,20 @@ class FeedServiceTest {
         `when`(dateProvider.now()).thenReturn(date)
         val limit = 5
 
+        val future = CompletableFuture<List<FeedItem>>()
+
         service.getOlderItems(date, limit) { items ->
-            assert(items.count() == limit)
-            assert(items[0].title == "01:00:29")
-            assert(items[1].title == "01:00:28")
-            assert(items[2].title == "01:00:27")
-            assert(items[3].title == "01:00:26")
-            assert(items[4].title == "01:00:25")
+            future.complete(items)
         }
+
+        val items = future.get(TIMEOUT, TimeUnit.SECONDS)
+
+        assert(items.count() == limit)
+        assert(items[0].title == "01:00:29")
+        assert(items[1].title == "01:00:28")
+        assert(items[2].title == "01:00:27")
+        assert(items[3].title == "01:00:26")
+        assert(items[4].title == "01:00:25")
     }
 
     @Test
@@ -38,14 +49,18 @@ class FeedServiceTest {
         val offsetToEnsureThereAreItems = (limit + 2) * 1000
         `when`(dateProvider.now()).thenReturn(Date(date.time + offsetToEnsureThereAreItems))
 
-        service.getNewerItems(date, limit) { items ->
-            assert(items.count() == limit)
-            assert(items[0].title == "01:00:35")
-            assert(items[1].title == "01:00:34")
-            assert(items[2].title == "01:00:33")
-            assert(items[3].title == "01:00:32")
-            assert(items[4].title == "01:00:31")
-        }
+        val items = CompletableFuture<List<FeedItem>>().also { future ->
+            service.getNewerItems(date, limit) { items ->
+                future.complete(items)
+            }
+        }.get(TIMEOUT, TimeUnit.SECONDS)
+
+        assert(items.count() == limit)
+        assert(items[0].title == "01:00:35")
+        assert(items[1].title == "01:00:34")
+        assert(items[2].title == "01:00:33")
+        assert(items[3].title == "01:00:32")
+        assert(items[4].title == "01:00:31")
     }
 
     @Test
@@ -54,25 +69,36 @@ class FeedServiceTest {
         `when`(dateProvider.now()).thenReturn(date)
         val limit = 5
 
-        service.getLatestItems(limit) { items ->
-            assert(items.count() == limit)
-            assert(items[0].title == service.dateFormat.format(Date(date.time - 1000)))
-            assert(items[1].title == service.dateFormat.format(Date(date.time - 2000)))
-            assert(items[2].title == service.dateFormat.format(Date(date.time - 3000)))
-            assert(items[3].title == service.dateFormat.format(Date(date.time - 4000)))
-            assert(items[4].title == service.dateFormat.format(Date(date.time - 5000)))
-        }
+        val items = CompletableFuture<List<FeedItem>>().also { future ->
+            service.getLatestItems(5) { items ->
+                future.complete(items)
+            }
+        }.get(TIMEOUT, TimeUnit.SECONDS)
+
+        assert(items.count() == limit)
+        assert(items[0].title == service.dateFormat.format(Date(date.time - 1000)))
+        assert(items[1].title == service.dateFormat.format(Date(date.time - 2000)))
+        assert(items[2].title == service.dateFormat.format(Date(date.time - 3000)))
+        assert(items[3].title == service.dateFormat.format(Date(date.time - 4000)))
+        assert(items[4].title == service.dateFormat.format(Date(date.time - 5000)))
     }
 
+
     @Test
-    fun testNow() {
-        val calendar = Calendar.getInstance()
-        calendar.add(Calendar.SECOND, -2)
+    fun `getNewerItems when date is 2 seconds ago, then return 2 items`() {
+        val expectedAmount = 2
+        val now = Date()
+        `when`(dateProvider.now()).thenReturn(now)
 
-        val date = calendar.time
+        val date = Date(now.time - (expectedAmount * 1000))
 
-        service.getNewerItems(date, 5) { items ->
-            assert(items.count() == 2)
-        }
+
+        val items = CompletableFuture<List<FeedItem>>().also { future ->
+            service.getNewerItems(date, expectedAmount + 5) { items ->
+                future.complete(items)
+            }
+        }.get(TIMEOUT, TimeUnit.SECONDS)
+
+        assert(items.count() == expectedAmount)
     }
 }
