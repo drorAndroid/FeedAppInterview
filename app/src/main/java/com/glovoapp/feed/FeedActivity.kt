@@ -3,8 +3,13 @@ package com.glovoapp.feed
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.Toast
+import com.glovoapp.feed.data.FeedItem
 import com.glovoapp.feed.data.FeedRepository
 import com.glovoapp.feed.data.FeedService
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_feed.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -24,6 +29,12 @@ class FeedActivity : AppCompatActivity() {
             adapter = feedItemAdapter
         }
 
+        //Feel free to use kotlin Coroutines or RxJava
+        requestWithCoroutines(feedItemAdapter)
+        //requestWithRx(feedItemAdapter)
+    }
+
+    private fun requestWithCoroutines(feedItemAdapter: FeedItemAdapter) {
         GlobalScope.launch {
             FeedRepository(FeedService()).getLatestItems { items ->
                 GlobalScope.launch(Dispatchers.Main) {
@@ -34,5 +45,26 @@ class FeedActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun requestWithRx(feedItemAdapter: FeedItemAdapter) {
+        Single.create<List<FeedItem>> { emitter ->
+
+            FeedService().getLatestItems { items ->
+                emitter.onSuccess(items)
+            }
+        }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnError { throwable ->
+                Toast.makeText(this@FeedActivity, "Error $throwable", Toast.LENGTH_SHORT)
+                throwable.printStackTrace()
+            }
+            .doOnSuccess { items ->
+                feedItemAdapter.items = items
+                feedItemAdapter.notifyDataSetChanged()
+            }
+            .subscribe()
+    }
 }
+
 
