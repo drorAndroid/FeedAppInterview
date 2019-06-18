@@ -3,7 +3,6 @@ package com.glovoapp.feed
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.widget.Toast
 import com.glovoapp.feed.data.FeedItem
 import com.glovoapp.feed.data.FeedRepository
 import com.glovoapp.feed.data.FeedService
@@ -55,10 +54,6 @@ class FeedActivity : AppCompatActivity() {
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnError { throwable ->
-                Toast.makeText(this@FeedActivity, "Error $throwable", Toast.LENGTH_SHORT)
-                throwable.printStackTrace()
-            }
             .doOnSuccess { items ->
                 feedItemAdapter.items = items
                 feedItemAdapter.notifyDataSetChanged()
