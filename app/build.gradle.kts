@@ -16,7 +16,7 @@ android {
         targetSdkVersion(Config.Android.targetSdk)
         versionCode = 1
         versionName = "1.0"
-        testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
@@ -40,13 +40,14 @@ android {
 
 dependencies {
     // Kotlin
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.31")
+    implementation(kotlinStdlib)
 
     // Android Support
-    implementation(Config.AndroidSupport.appcompatV7)
-    implementation(Config.AndroidSupport.recyclerview)
-    implementation(Config.AndroidSupport.cardview)
-    implementation(Config.AndroidSupport.constraintLayout)
+    implementation(Config.Libraries.appcompatV7)
+    implementation(Config.Libraries.recyclerView)
+    implementation(Config.Libraries.cardView)
+    implementation(Config.Libraries.constraintLayout)
+    implementation(Config.Libraries.constraintLayoutSolver)
 
     implementation(Config.Libraries.coroutinesCore)
     implementation(Config.Libraries.coroutinesAndroid)
@@ -62,7 +63,6 @@ dependencies {
     androidTestImplementation(Config.Testing.mockitoCore)
 
     androidTestImplementation(Config.Testing.testRunner)
-    androidTestImplementation(Config.Testing.testOrchestrator)
 
     androidTestImplementation(Config.Testing.espressoCore)
 

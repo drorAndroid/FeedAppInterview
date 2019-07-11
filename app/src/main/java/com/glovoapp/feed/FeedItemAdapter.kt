@@ -1,9 +1,9 @@
 package com.glovoapp.feed
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.glovoapp.feed.data.FeedItem
 import kotlinx.android.synthetic.main.item.view.*
 
