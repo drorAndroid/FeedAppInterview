@@ -1,8 +1,8 @@
 package com.glovoapp.feed
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.glovoapp.feed.data.FeedItem
 import com.glovoapp.feed.data.FeedRepository
 import com.glovoapp.feed.data.FeedService
@@ -30,7 +30,7 @@ class FeedActivity : AppCompatActivity() {
 
         //Feel free to use kotlin Coroutines or RxJava
         requestWithCoroutines(feedItemAdapter)
-        //requestWithRx(feedItemAdapter)
+//        requestWithRx(feedItemAdapter)
     }
 
     private fun requestWithCoroutines(feedItemAdapter: FeedItemAdapter) {
