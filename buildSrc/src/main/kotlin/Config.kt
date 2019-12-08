@@ -29,9 +29,8 @@ object Config {
     }
 
     object Android {
-        const val minSdk = 19
-        const val buildTools = "28.0.3"
-        const val compileSdk = 28
+        const val minSdk = 21
+        const val compileSdk = 29
         const val targetSdk = compileSdk
     }
 
