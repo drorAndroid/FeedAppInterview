@@ -2,36 +2,35 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.kotlin
 
 
-const val kotlinVersion = "1.3.41"
+const val kotlinVersion = "1.3.61"
 
 val DependencyHandler.kotlinStdlib get() = kotlin("stdlib-jdk8", version = kotlinVersion)
 
 object Config {
 
     object Versions {
-        const val appcompat = "1.0.0"
-        const val recyclerView = "1.0.0"
+        const val appcompat = "1.1.0"
+        const val recyclerView = "1.1.0"
         const val cardView = "1.0.0"
-        const val constraintLayout = "1.1.2"
+        const val constraintLayout = "1.1.3"
 
-        const val rxJava = "2.2.10"
-        const val rxKotlin = "2.3.0"
+        const val rxJava = "2.2.15"
+        const val rxKotlin = "2.4.0"
         const val rxAndroid = "2.1.1"
-        const val coroutinesCore = "1.3.0-M2"
-        const val coroutinesAndroid = "1.3.0-M2"
+        const val coroutinesCore = "1.3.2"
+        const val coroutinesAndroid = "1.3.2"
 
         // testing
         const val junit = "4.12"
-        const val powerMock = "2.0.2"
-        const val mockito = "2.28.2"
-        const val testRunner = "1.1.0"
-        const val espressoCore = "3.1.0"
+        const val powerMock = "2.0.4"
+        const val mockito = "3.2.0"
+        const val testRunner = "1.2.0"
+        const val espressoCore = "3.2.0"
     }
 
     object Android {
-        const val minSdk = 19
-        const val buildTools = "28.0.3"
-        const val compileSdk = 28
+        const val minSdk = 21
+        const val compileSdk = 29
         const val targetSdk = compileSdk
     }
 
@@ -64,5 +63,4 @@ object Config {
         const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutinesAndroid}"
     }
 }
-
 

@@ -16,5 +16,5 @@ repositories {
 }
 
 dependencies {
-    compile("com.android.tools.build:gradle:3.4.1")
+    implementation("com.android.tools.build:gradle:3.5.3")
 }
