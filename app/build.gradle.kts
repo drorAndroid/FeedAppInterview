@@ -55,6 +55,9 @@ dependencies {
     implementation(Config.Libraries.rxAndroid)
     implementation(Config.Libraries.rxKotlin)
 
+    implementation(Config.Libraries.dagger2)
+    kapt(Config.Libraries.dagger2Compiler)
+
     // Test
     testImplementation(Config.Testing.junit)
 
