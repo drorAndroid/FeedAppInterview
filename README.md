@@ -18,7 +18,7 @@ This is a simple app that shows an endless feed of items. Each item is represent
 ### Architecture
 1. **Refactor into a Presentation pattern** to allow unit testing the project. Eg.: MVP, MVVM, MVI, etc.
 2. **Implement FeedRepository** to take care of the pagination and enables seamless infinite scrolling experience.
-3. Unit test the code.
+3. **Unit test** your solution.
 
 ### Logic
 1. **Implement seamless one directional scrolling** (from newest to oldest items). After launching the app I should be able to seamlessly scroll down to older items.
@@ -30,7 +30,7 @@ This is a simple app that shows an endless feed of items. Each item is represent
 ## Google
 You can use google during the interview.
 
-## What are we testing you for ?
+## What we expect from you ?
 
-The purpose of this task to see you how you plan, design and code your solution. We care more about well designed and tested solution than adding unneeded features and extra functionality.
+The purpose of this challenge is to see you how you plan, design and code your solution. We care more about well designed and tested solution than adding unneeded features and extra functionality.
 Good luck and feel free to ask the interviewers for any clarifications :)
