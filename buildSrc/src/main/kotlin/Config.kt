@@ -9,7 +9,7 @@ val DependencyHandler.kotlinStdlib get() = kotlin("stdlib-jdk8", version = kotli
 object Config {
 
     object Versions {
-        const val dagger2 = "2.16"
+        const val dagger2 = "2.25.4"
         const val appcompat = "1.1.0"
         const val recyclerView = "1.1.0"
         const val cardView = "1.0.0"
