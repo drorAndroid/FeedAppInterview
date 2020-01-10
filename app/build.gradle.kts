@@ -8,7 +8,6 @@ plugins {
 
 android {
     compileSdkVersion(Config.Android.compileSdk)
-    buildToolsVersion(Config.Android.buildTools)
 
     defaultConfig {
         applicationId = "com.glovoapp.feed"
