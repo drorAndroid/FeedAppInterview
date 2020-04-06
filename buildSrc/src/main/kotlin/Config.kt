@@ -9,22 +9,22 @@ val DependencyHandler.kotlinStdlib get() = kotlin("stdlib-jdk8", version = kotli
 object Config {
 
     object Versions {
-        const val dagger2 = "2.25.4"
+        const val dagger2 = "2.27"
         const val appcompat = "1.1.0"
         const val recyclerView = "1.1.0"
         const val cardView = "1.0.0"
         const val constraintLayout = "1.1.3"
 
-        const val rxJava = "2.2.15"
+        const val rxJava = "2.2.19"
         const val rxKotlin = "2.4.0"
         const val rxAndroid = "2.1.1"
         const val coroutinesCore = "1.3.2"
         const val coroutinesAndroid = "1.3.2"
 
         // testing
-        const val junit = "4.12"
-        const val powerMock = "2.0.4"
-        const val mockito = "3.2.0"
+        const val junit = "4.13"
+        const val powerMock = "2.0.7"
+        const val mockito = "3.3.3"
         const val testRunner = "1.2.0"
         const val espressoCore = "3.2.0"
     }

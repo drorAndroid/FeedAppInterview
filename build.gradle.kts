@@ -1,6 +1,4 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import com.github.benmanes.gradle.versions.updates.resolutionstrategy.ComponentFilter
-import com.github.benmanes.gradle.versions.updates.resolutionstrategy.ComponentSelectionWithCurrent
 import org.jetbrains.kotlin.gradle.internal.ensureParentDirsCreated
 import java.util.regex.Pattern
 
@@ -15,10 +13,10 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:3.5.3")
+        classpath("com.android.tools.build:gradle:3.6.2")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("org.jetbrains.kotlin:kotlin-android-extensions:$kotlinVersion")
-        classpath("com.github.ben-manes:gradle-versions-plugin:0.27.0")
+        classpath("com.github.ben-manes:gradle-versions-plugin:0.28.0")
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
