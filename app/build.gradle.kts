@@ -41,6 +41,7 @@ dependencies {
     // Kotlin
     implementation(kotlinStdlib)
 
+    implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
     // Android Support
     implementation(Config.Libraries.appcompatV7)
     implementation(Config.Libraries.recyclerView)
